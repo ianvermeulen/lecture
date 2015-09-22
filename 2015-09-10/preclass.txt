@@ -3,12 +3,40 @@
    host cores are used, for the moment).  How do things change with
    the addition of the two Phi boards?
 
+      Totient node max memory bandwidth = 59GB/sec
+      Totient node max flops = 460.8 GFlops/sec (from 8/27)
+
+      Roofline diagram has same shape as in paper, the ridge point is at
+      (7.81 Flops/Byte, 460.8 GFlops/sec)
+      
+
+      Phi board max memory bandwidth = 320 GB/sec
+      Phi board max flops = 1011 GFlops/sec
+
+
+      WITH PHI BOARDS and TOTIENT NODE
+      total max memory bandwidth = 699 GB/sec
+      total max flops = 2483 GFlops/sec
+
+      Roofline diagram has the ridge point at
+      (3.55 Flops/Byte, 2483 GFlops/sec)
+
+
+
 2. What is the difference between two cores and one core with
    hyperthreading?
+
+   The two logical processes running with hyperthreading will have
+   to share execution resources. So they will both access the same
+   cache and other hardware required for execution while the two cores
+   will be more independent.
 
 3. Do a Google search to find a picture of how memories are arranged
    on the Phi architecture.  Describe the setup briefly in your own
    words.  Is the memory access uniform or non-uniform?
+
+   Memory access looks uniform to me on one phi board, but it NUMA makes
+   more sense to me for such a large number of processors...
 
 4. Consider the parallel dot product implementations suggested in the
    slides.  As a function of the number of processors, the size of the
@@ -17,3 +45,8 @@
    [Note that dot products have low arithmetic intensity -- the
     roofline model may be useful for reasoning about the peak
     performance for computing pieces of the dot product]
+
+  s = size of vector
+  speedup = 1/ (s/p + p*t_message)
+
+

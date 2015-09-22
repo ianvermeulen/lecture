@@ -22,9 +22,18 @@ something into an already-full cache.
 the memory-based AI of this code? (Hint: What is the memory-based AI of just the
 innermost loop?)
 
+  The AI should be almost 0, because for each floating point operation (mult) a new
+  memory access has to be made. This is because regardless of whether or not the
+  arrays are stored in row-major or column-major order, one of the arrays will be
+  traversing memory in unit stride and the other will have a much larger stride,
+  which will cause a lot of cache misses and require bytes to be transferred
+  from memory to cache.
 
 2. Now suppose that the cache is substantially larger than 16N, but
 substantially smaller than 8N^2. What is the AI now?
+
+  The AI should still be the same size as part 1. There may be fewer cache misses
+  but for each miss more bytes will be transferred.
 
 
 3. Now suppose the cache is large enough to hold all of A, B, and C. What is the
@@ -32,19 +41,34 @@ AI now? (Hint: Writing to a byte of memory not already in the cache incurs two
 memory transfers: one to move the data to the cache for writing, and one to move
 the written data back to main memory.)
 
+  Assuming all of A, B, and C are brought into memory (with C being written back
+  to as well), then 4*8N^2 bytes will be transferred between memory and cache.
+  There will be N^3 flops that occur, so
+    AI = N^3 / 32N^2 = N/32
 
 4. Cache overflowing. On my CPU (Intel i7-4700 HQ), L1, L2, and L3 caches are 32
 KB, 256 KB, and 6 MB respectively. What is the largest problem size N that will
 fit in each cache? What is the arithmetic intensity associated with each problem
 size?
 
+  N = sqrt(6*2^30 / 3) = 2^14 = 16384
+  AI = 2^14/32 = 2^9 = 512
+
 
 5. My CPU has 4 cores, each of which can do 8 fused multiply-adds per cycle, has
 a clock rate of 2.4 GHz, and a memory bandwidth of 25.6 GB/s. At what arithmetic
 intensity does my machine become CPU-bound?
 
+  AI = (4*8*2.4E9) / 25.6E9 = 3
 
 6. So, for what size range for N will naive matmul be CPU-bound on my machine?
 
+  3 = N/32 --> N >= 96
 
 7. So, what will a plot of Flops/sec vs N look like?
+
+  It will increase very quickly to its max once N=96, then it will maintain the
+  max until N exceeds 16384. Then it will begin to shrink since the matrices can
+  no longer fit in cache.
+
+

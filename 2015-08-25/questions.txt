@@ -18,6 +18,10 @@ In practice, this took X time.  This includes
 Consider the following questions:
 
 1. What is a simple model that would predict this time?
-2. What about a simple model to predict time for one person to count?
-3. How big should the class be before the parallel method takes less time?
+  - Time = T_start + (students/numRows)/CountingSpeed + T_gatherCounts + T_arithmetic
 
+2. What about a simple model to predict time for one person to count?
+  - Time = TotalStudents/CountingSpeed
+
+3. How big should the class be before the parallel method takes less time?
+  - The class should be big enough that the time difference between counting one row and counting the entire class is bigger than the amount of time spend starting the process, gathering the counts, and doing the final arithemetic.

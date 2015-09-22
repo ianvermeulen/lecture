@@ -8,13 +8,25 @@
     you should use a script to produce this plot, with both the serial
     fraction and the maximum number of cores as parameters.
 
+        p = number of cores
+        Speedup = 1/(0.1 + 0.9/p)
+        Parallel Efficiency = Speedup/p
+
 2.  Suppose a particular program can be partitioned into perfectly
     independent tasks, each of which takes time tau.  Tasks are
     set up, scheduled, and communicated to p workers at a (serial)
     central server; this takes an overhead time alpha per task.
     What is the theoretically achievable throughput (tasks/time)?
 
+        Time = n*alpha + Tau
+        Thoughput = n/Time = 1/(alpha + Tau/n)
+            - If we let n->infinity, then MaxThroughput = 1/alpha
+
 3.  Under what circumstances is it best to not tune?
+
+        If increasing performance will not yield any useful benefit 
+        since it already runs fast enough, or if tuning will take 
+        more time than it will save
 
 4.  The class cluster consists of eight nodes and fifteen Xeon Phi
     accelerator boards.  Based on an online search for information on
@@ -23,5 +35,18 @@
     you computed this, and give URLs for where you got the parameters
     in your calculation.  (We will return to this question again after
     we cover some computer architecture.)
+
+    links:
+        http://ark.intel.com/products/71992/Intel-Xeon-Phi-Coprocessor-5110P-8GB-1_053-GHz-60-core
+        http://ark.intel.com/products/83352/Intel-Xeon-Processor-E5-2620-v3-15M-Cache-2_40-GHz
+    peak flop rate = NumCores * InstrsPerCore * Average frequency
+    
+    Processor rate = 6 * (24?) * 3.2E9 = 460.8E9
+    Coprocessor rate = 60 * (16?) * 1.053E9 = 1011E9
+    Total rate = 8*Processor_rate + 15*Coprocessor_rate = 18.85 TFlops
     
 5.  What is the approximate theoretical peak flop rate for your own machine?
+
+    http://ark.intel.com/products/83508/Intel-Core-i5-4278U-Processor-3M-Cache-up-to-3_10-GHz
+
+    Total rate = 2 * (16?) * 3.1E9 = 99.2GFlops

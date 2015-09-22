@@ -13,14 +13,32 @@
        time per trial (t_trial), and time to update the global
        counters in the critical section (t_update).
 
+       Run Time = (N/p)*t_trial + t_update*(N/batch_size)
+
+
     b) Run the code with a few different parameter values in order
        to estimate N, t_trial, and t_update for this code on
        a totient compute node.
+
+       N is about 1000000
+       t_trial is about 7.02 ns
+       t_update is about 0.25 ns
+
 
     c) Based on your model, suggest a strategy for choosing the batch
        size.  How might you generalize this strategy to automatically
        choose batch sizes for different types of computational
        experiments?
+
+       From the simple, naive model suggested, increasing the batch size
+       basically always reduce run time. However, the batch size shouldn't
+       be so large that too many simulations are run. So the batch_size could
+       be set at N/p so each thread can run one batch and then have each
+       update the global counters. This will work if the number of trials
+       that need to run are known, otherwise using a smaller batch size
+       would be better so only enough trials to obatin the desired amount
+       of error.       
+
     
 3.  In the workq subdirectory of this directory, there is a basic work
     queue implementation.  Following the strategy outlined in the

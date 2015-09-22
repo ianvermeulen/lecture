@@ -11,12 +11,22 @@ with questions for class!
     you computed this, and give URLs for where you got the parameters
     in your calculation.  (We will return to this question again after
     we cover some computer architecture.)
+
+        See previous
     
 2.  What is the approximate theoretical peak flop rate for your own machine?
+
+        See previous
 
 3.  Suppose there are t tasks that can be executed in a pipeline
     with p stages.  What is the speedup over serial execution of the
     same tasks?
+
+        x = processing time per task
+        serial time = t*x
+        time_per_stage = x/p + pipeline_overhead
+        pipelined time (assuming lots of tasks) = time_per_stage*t
+        speedup = t*x/(t*x/p + t*pipelined_overhead) = 1/(1/p + pipelined_overhead/x)
 
 4.  Consider the following list of tasks (assume they can't be pipelined):
 
@@ -31,6 +41,18 @@ with questions for class!
     a compiled application?  What is the minimum parallel time given
     an arbitrary number of processors?
 
+        Compile GCC
+        |
+        Compile OpenMPI, compile OpenBLAS
+        |
+        Compile LAPACK
+        |
+        Compile application
+
+        serial time = 1hr + 0.5hr + 0.25hr + 0.5hr + 0.5hr = 2.75hr
+        parallel time = 1hr + 0.25hr + 0.5hr + 0.5hr = 2.25hr
+        Tasks will be being compiled in parallel for 0.5 hr (openMPI and OpenBLAS/LAPACK)
+
 5.  Clone the membench repository from GitHub:
 
        git clone git@github.com:cornell-cs5220-f15/membench.git
@@ -43,6 +65,11 @@ with questions for class!
     timings-heat.pdf; what can you tell about the cache architecture
     on your machine from the plot?
 
+        Probably have 3 levels of cache.
+        L1 looks around 64 kB
+        L2 looks around 256 kB
+        L3 looks around 4 MB
+
 6.  From the cloned repository, check out the totient branch:
 
        git checkout totient
@@ -51,6 +78,10 @@ with questions for class!
     If you prefer, you can also look at the files on GitHub.  Either
     way, repeat the exercise of problem 5.  What can you tell about
     the cache architecture of the totient nodes?
+
+        Also look to have 3 levels of caching. The L1 and L2 actually look 
+        like similar sizes as my laptop, but the L3 cache looks about 4
+        times as large.
 
 7.  Implement the following three methods of computing the centroid
     of a million two-dimensional coordinates (double precision).
@@ -69,3 +100,6 @@ with questions for class!
     compiler.  To do this, run "module load cs5220" and run (e.g.)
 
         icc -o centroid centroid.c
+
+    Version 3 performs best, then version 1, then version 2. This is what
+    I would expect
