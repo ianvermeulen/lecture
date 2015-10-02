@@ -5,14 +5,29 @@ the glider pattern for a few generations.
 
 0.  How much time did you spend on this pre-class exercise, and when?
 
+    About 20, well after they were released. End of September
+
 1.  What are one or two points that you found least clear in the
     9/15 slide decks (including the narration)?
+
+    "Want big blocks with low surface-to-volume ratio" was kind of unclear
 
 2.  In the basic implementation provided, what size board for the Game
     of Life would fit in L3 cache for one of the totient nodes?  Add a
     timer to the code and run on the totient node.  How many cells per
     second can we update for a board that fits in L3 cache?  For a
     board that does not fit?
+
+    Board Size = 15MB / (16B per cell) ~= 1M cells = 1000x1000 board
+
+    very rough, low end estimation: 1M cells * (10 flops) = 10MFlops/turn
+
+    assuming 10% effiency, we get about about 50 Gflops/sec from one 
+    Totient node
+
+    This means we get very roughly 5000 turns/sec.
+    If the board doesn't fit in the L3 cache, it will be much slower
+    due to slow memory access latencies
 
 3.  Assuming that we want to advance time by several generations,
     suggest a blocking strategy that would improve the operational
@@ -21,10 +36,20 @@ the glider pattern for a few generations.
     want to try your hand at implementing your strategy (though you
     need not spend too much time on it).
 
+    Instead of only keeping two copies of the board, store many copies
+    of the board so that you can look "back in time" more than by
+    only keeping two copies. Now split the boards up into smaller
+    blocks so that we can keep all generations of that board
+    section in cache.
+
 4.  Comment on what would be required to parallelize this code
     according to the domain decomposition strategy outlined in the
     slides.  Do you think you would see good speedups on one of
     the totient nodes?  Why or why not?
+
+    Yes. All of the coprocessors would be able to run in parallel
+    and improve performance. Depending on the size of the board,
+    spliting it up into more domains may also be beneficial.
 
 5.  Suppose we want to compute long-range interactions between two
     sets of particles in parallel using the obvious n^2 algorithm in a
@@ -49,3 +74,11 @@ the glider pattern for a few generations.
     Based on what you know about memories and parallel architecture,
     do you see any features of this approach that are likely to lead
     to poor performance?
+
+    It doesn't make sense to have the inner loop be the bigger loop.
+    The bigger loop is more likely to loop through more elements than fit
+    in the cache. Instead the loop ordering should be switched. This means
+    That since the processor's particles will git better in cache, every
+    time a new section of the total particles are brought into cache, more
+    loop iterations can be completed and the total number of cache
+    misses will be reduced from having to access all the particles.

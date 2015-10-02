@@ -1,7 +1,12 @@
 0.  How much time did you spend on this pre-class exercise, and when?
 
+    20 min on 9-23
+
 1.  What are one or two points that you found least clear in the
     9/24 slide decks (including the narration)?
+
+    Maybe include a little more description on the "sections"
+    parallel work divisions point.
 
 2.  The omp_mc.c file in the demo subdirectory runs a Monte Carlo
     simulation to estimate the expected value of a uniform random
@@ -13,16 +18,34 @@
        time per trial (t_trial), and time to update the global
        counters in the critical section (t_update).
 
+       Run Time = (N/p)*t_trial + t_update*(N/batch_size)
+
     b) Run the code with a few different parameter values in order
        to estimate N, t_trial, and t_update for this code on
        a totient compute node.
+
+       N is about 1000000
+       t_trial is about 7.02 ns
+       t_update is about 0.25 ns
 
     c) Based on your model, suggest a strategy for choosing the batch
        size.  How might you generalize this strategy to automatically
        choose batch sizes for different types of computational
        experiments?
 
+       From the simple, naive model suggested, increasing the batch size
+       basically always reduce run time. However, the batch size shouldn't
+       be so large that too many simulations are run. So the batch_size could
+       be set at N/p so each thread can run one batch and then have each
+       update the global counters. This will work if the number of trials
+       that need to run are known, otherwise using a smaller batch size
+       would be better so only enough trials to obatin the desired amount
+       of error. 
+
 3.  The "OpenMP pitfalls" paper describes some common pitfalls (both
     performance and correctness) in OpenMP codes.  Go through the
     checklist in the paper for omp_mc.c.  What performance mistakes
     are there in the demonstration implementation?
+
+    - Atomic could have been used instead of critical to set the seed
+

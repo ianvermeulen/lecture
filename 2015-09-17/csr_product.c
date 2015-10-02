@@ -4,18 +4,26 @@
 
 
 typedef struct csr_t {
-    int  n;      /* Dimension of matrix (assume square) */
-    double* pr;  /* Array of matrix nonzeros (row major order) */
-    int* col;    /* Column indices of nonzeros */
-    int* ptr;    /* Offsets of the start of each row in pr
-                    (ptr[n] = number of nonzeros) */
+  int  n;   /* Dimension of matrix (assume square) */
+  int* pr;  /* Array of matrix nonzeros (row major order) */
+  int* col; /* Column indices of nonzeros *
+  int* ptr; /* Offsets of the start of each row in pr
+               (ptr[n] = number of nonzeros) */
 } csr_t;
 
-
+// assume result initizialized to zeros
 void sparse_multiply(csr_t* A, double* x, double* result)
 {
-    memset(result, 0, A->n * sizeof(double));
-    /* Fill in here */
+  int col = (A->ptr)[0];
+  int colNext;
+  int n = scr_t->n;
+  for (int i = 0; i < n; i++) {
+    colNext = (A->ptr)[i+1];
+    while (col < colNext) {
+      result[i] += (A->pr)[colStart] * X[(csr_t->col)[col]];
+      col++;
+    }
+  }
 } 
 
 

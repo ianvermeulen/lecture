@@ -6,8 +6,12 @@ that you can figure out the numerical jargon.
 
 0.  How much time did you spend on this pre-class exercise, and when?
 
+    20 minutes end of September
+
 1.  What are one or two points that you found least clear in the
     9/17 slide decks (including the narration)?
+
+    Elaborate on Stability/Stiffness Issues for explicit time stepping
 
 2.  Fill in the most straightforward implementation you can think of
     for multiplying a compressed sparse row matrix by a vector.
@@ -22,9 +26,19 @@ that you can figure out the numerical jargon.
                        (ptr[n] = number of nonzeros) */
       } csr_t;
     
+      // assume result initizialized to zeros
       void sparse_multiply(csr_t* A, double* x, double* result)
       {
-          /* Fill in here */
+          int col = (A->ptr)[0];
+          int colNext;
+          int n = scr_t->n;
+          for (int i = 0; i < n; i++) {
+            colNext = (A->ptr)[i+1];
+            while (col < colNext) {
+              result[i] += (A->pr)[colStart] * X[(csr_t->col)[col]];
+              col++;
+            }
+          }
       } 
 
 3.  From the slides, complete the following short code:
@@ -32,7 +46,7 @@ that you can figure out the numerical jargon.
       double laplacian_u(double (*u)(double x, double y),
                          double h, double x, double y)
       {
-          /* Estimate the Laplacian applied to u at (x,y) */
+          ?????????????????????????
       }
 
     If you are unfamiliar with the syntax, the first argument to
@@ -61,3 +75,6 @@ that you can figure out the numerical jargon.
     several steps without communicating, can you describe how to
     similarly advance this scheme?  Are there any advantages to such
     an organization if there is only one core available?
+
+    I am not sure. I would guess that there isn't, and even if there is
+    the advantage is much less than with multi-core.

@@ -1,7 +1,11 @@
 0.  How much time did you spend on this pre-class exercise, and when?
 
+    20 minutes end of September
+
 1.  What are one or two points that you found least clear in the
     9/22 slide decks (including the narration)?
+
+    The final point where you say "E[g(X)]=E[f(X)]" is kinda unclear
 
 2.  The pthread_mc.c file in the demo subdirectory runs a Monte Carlo
     simulation to estimate the expected value of a uniform random
