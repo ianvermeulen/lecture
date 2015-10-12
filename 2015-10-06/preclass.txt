@@ -1,7 +1,11 @@
 0.  How much time did you spend on this pre-class exercise, and when?
 
+    25 minutes on 10/12
+
 1.  What are one or two points that you found least clear in the
     10/06 slide decks (including the narration)?
+
+      Expand on Cross-Node Communication costs and nonlinearity
 
 2.  In the upcoming lecture (10/8), we will discuss how to model
     latency and bandwidth of MPI sends and receives using the
@@ -21,7 +25,19 @@
        you will have to add a module load to the start of the PBS
        scripts).  How do the timings differ from the Intel MPI timings?
 
+        The openMPI timings are both faster and run at roughtly the 
+        same speed for both the 2core and 2chip tests. This speed, 
+        however, is about the same as the normal 2chip implementation. 
+        The normal 2core run is much slower, though.       
+
     c) When running at the peak rate (e.g. 16 double precision
        flops/cycle), how many (double precision) floating point ops
        could two totient cores do in the minimal time required for one
        MPI message exchange?
+
+         let a message take 4.3759e-7 or 437.6 nsec. Then we can use 
+         the following parameters:
+          flops/cycle = 16/core * 2cores = 32 flops/cycle
+          freq (Turbo) = 3.2 Ghz
+
+        Then #flops = (flops/cycle)*freq*(437.6E-9 secs) = 44810
