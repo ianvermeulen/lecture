@@ -3,6 +3,9 @@
 1.  What are one or two points that you found least clear in the
     10/08 slide decks (including the narration)?
 
+      Include some use cases for the scatter/gather, All-to-All, etc.
+      schemes.
+
 2.  Now that we are now basically a third of the way into the
     semester, and are (mostly) settled into the steady pace of things,
     I would appreciate your feedback on what is working well or poorly
@@ -10,12 +13,19 @@
     particularly useful -- venting about the cluster, for example, is
     understandable but doesn't help me that much in adjusting!
 
+      Lectures are a little slow paced. The student picker was a good
+      idea but seems to be wasting a lot of time in class when no one
+      answers.
+
 3.  The ring demo implements the protocol described in the particle
     systems slide deck from 9/15:
 
     http://cornell-cs5220-f15.github.io/slides/2015-09-15-particle.html#/11
 
     a) In your own words, describe what ring.c is doing.
+
+        it is sending data through a ring network of buffers and measuring
+        how much communicaiton occurs.
 
     b) How might you modify the code to have the same computational
        pattern, but using non-blocking communication rather than
